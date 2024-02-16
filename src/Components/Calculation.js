@@ -26,20 +26,33 @@ const Calculation = () => {
 
   const calculateBAC = () => {
     // Formula for BAC calculation
-    const alcoholConsumed =
-      beerVolume * (beerABV / 100) +
-      wineVolume * (wineABV / 100) +
-      liquorVolume * (liquorABV / 100);
-    const weightInGrams = weight * 1000; // Convert weight to grams
-    const totalBodyWater =
-      gender === "MALE" ? weightInGrams * 0.58 : weightInGrams * 0.49;
-    const metabolismRate = 0.017;
-    const hours = hoursSinceFirstDrink + minutesSinceFirstDrink / 60;
-    const bacValue = (
-      alcoholConsumed / totalBodyWater -
-      metabolismRate * hours
-    ).toFixed(2);
+    // const alcoholConsumed =
+    //   beerVolume * (beerABV / 100) +
+    //   wineVolume * (wineABV / 100) +
+    //   liquorVolume * (liquorABV / 100);
+    // const weightInGrams = weight * 1000; // Convert weight to grams
+    // const totalBodyWater =
+    //   gender === "MALE" ? weightInGrams * 0.58 : weightInGrams * 0.49;
+    // const metabolismRate = 0.017;
+    const hours = hoursSinceFirstDrink + (minutesSinceFirstDrink / 60);
+    // let bacValue = (
+    //   alcoholConsumed / totalBodyWater -
+    //   metabolismRate * hours
+    // ).toFixed(2);
+
+    //alcoho volume to grams
+    const totalAlcoholConsumed = (beerVolume * beerABV * 0.789) + (wineVolume * wineABV * 0.789) + (liquorVolume * liquorABV * 0.789);
+    //body weight to grams
+    const bodyWeight = weight * 1000 ;
+    //rate
+    const r = gender === 'MALE' ? 0.68 : 0.55;
+    //blood alcohol calculator based on Widmark Formula(with time)
+    const bacValue = (((totalAlcoholConsumed / (bodyWeight * r * 100)) - (hours * 0.015 / (bodyWeight * r * 100))) * 100).toFixed(2)
+    
+    
     setBAC(bacValue);
+    setBAC(bacValue);
+    showAlert();
   };
 
   const resetForm = () => {
@@ -51,6 +64,12 @@ const Calculation = () => {
     setHoursSinceFirstDrink(0);
     setMinutesSinceFirstDrink(0);
     setBAC(0);
+  };
+
+  const showAlert = () => {
+    if (bac > 0.2) {
+      alert("Your Blood Alcohol Content (BAC) is greater than 0.2!");
+    }
   };
 
   return (
@@ -93,7 +112,14 @@ const Calculation = () => {
               type="number"
               placeholder="ENTER WEIGHT"
               value={weight}
-              onChange={(e) => setWeight(e.target.value)}
+              onChange={(e) => 
+                {
+                  const inputValue = e.target.value;
+                  if (/^\d+$/.test(inputValue) || inputValue === '') {
+                    setWeight(inputValue)
+                  }
+                }
+              }
             />
           </div>
 
@@ -104,9 +130,16 @@ const Calculation = () => {
             <input
               className="w-20  p-1 rounded-lg"
               type="number"
-              placeholder="0"
+              placeholder={0}
               value={hoursSinceFirstDrink}
-              onChange={(e) => setHoursSinceFirstDrink(e.target.value)}
+              onChange={(e) => 
+                {
+                  const inputValue = e.target.value;
+                  if (/^\d+$/.test(inputValue) || inputValue === '') {
+                    setHoursSinceFirstDrink(inputValue)
+                  }
+                }  
+              }
             />
           </div>
           <div className="my-5">
@@ -116,9 +149,16 @@ const Calculation = () => {
             <input
               className="w-20  p-1 rounded-lg"
               type="number"
-              placeholder="0"
+              placeholder={0}
               value={minutesSinceFirstDrink}
-              onChange={(e) => setMinutesSinceFirstDrink(e.target.value)}
+              onChange={(e) => 
+                {
+                  const inputValue = e.target.value;
+                  if (/^\d+$/.test(inputValue) || inputValue === '') {
+                    setMinutesSinceFirstDrink(inputValue)
+                  }
+                }
+              }
             />
           </div>
           <div className="flex my-5 mt-10 justify-between">
@@ -137,7 +177,14 @@ const Calculation = () => {
                   type="number"
                   placeholder="0"
                   value={beerVolume}
-                  onChange={(e) => setBeerVolume(e.target.value)}
+                  onChange={(e) => 
+                    {
+                      const inputValue = e.target.value;
+                      if (/^\d+$/.test(inputValue) || inputValue === '') {
+                        setBeerVolume(inputValue)
+                      }
+                    }
+                  }
                 />
               </div>
               <div className="flex flex-col items-center mt-3">
@@ -147,7 +194,14 @@ const Calculation = () => {
                   type="number"
                   placeholder="0"
                   value={beerABV}
-                  onChange={(e) => setBeerABV(e.target.value)}
+                  onChange={(e) => 
+                    {
+                      const inputValue = e.target.value;
+                      if (/^\d+$/.test(inputValue) || inputValue === '') {
+                        setBeerABV(inputValue)
+                      }
+                    }
+                  }
                 />
               </div>
             </div>
@@ -165,7 +219,14 @@ const Calculation = () => {
                   type="number"
                   placeholder="0"
                   value={wineVolume}
-                  onChange={(e) => setWineVolume(e.target.value)}
+                  onChange={(e) => 
+                    {
+                      const inputValue = e.target.value;
+                      if (/^\d+$/.test(inputValue) || inputValue === '') {
+                        setWineVolume(inputValue)
+                      }
+                    }
+                  }
                 />
               </div>
               <div className="flex flex-col items-center mt-3">
@@ -175,7 +236,14 @@ const Calculation = () => {
                   type="number"
                   placeholder="0"
                   value={wineABV}
-                  onChange={(e) => setWineABV(e.target.value)}
+                  onChange={(e) => 
+                    {
+                      const inputValue = e.target.value;
+                      if (/^\d+$/.test(inputValue) || inputValue === '') {
+                        setWineABV(inputValue)
+                      }
+                    }
+                  }
                 />
               </div>
             </div>
@@ -194,7 +262,14 @@ const Calculation = () => {
                   type="number"
                   placeholder="0"
                   value={liquorVolume}
-                  onChange={(e) => setLiquorVolume(e.target.value)}
+                  onChange={(e) =>
+                    {
+                      const inputValue = e.target.value;
+                      if (/^\d+$/.test(inputValue) || inputValue === '') {
+                        setLiquorVolume(inputValue)
+                      }
+                    }
+                  }
                 />
               </div>
               <div className="flex flex-col items-center mt-3">
@@ -204,7 +279,14 @@ const Calculation = () => {
                   type="number"
                   placeholder="0"
                   value={liquorABV}
-                  onChange={(e) => setLiquorABV(e.target.value)}
+                  onChange={(e) =>
+                    {
+                      const inputValue = e.target.value;
+                      if (/^\d+$/.test(inputValue) || inputValue === '') {
+                        setLiquorABV(inputValue)
+                      }
+                    }
+                  }
                 />
               </div>
             </div>

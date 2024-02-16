@@ -58,7 +58,7 @@ const Calculation = () => {
     ).toFixed(2);
 
     setBAC(bacValue);
-    showAlert();
+    //showAlert();
   };
 
   const resetForm = () => {
@@ -304,7 +304,7 @@ const Calculation = () => {
       {bac !== 0 && (
         <div className="my-5 md:flex font-semibold text-black">
           <div
-            className={`mb-10 text-center font-bold ${
+            className={` mb-10 text-center font-bold ${
               bac > 0.2 ? "text-red-500" : "text-green-500"
             }`}
           >
